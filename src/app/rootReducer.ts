@@ -1,9 +1,9 @@
-import { combineReducers } from 'redux';
-import beansReducer from 'src/features/beans/reducer';
+import { combineReducers } from "redux";
+import beansReducer from "src/features/beans";
 
 const rootReducer = combineReducers({
   // Add your reducers here
-  beans: beansReducer
+  beans: beansReducer,
 });
 
 export default rootReducer;

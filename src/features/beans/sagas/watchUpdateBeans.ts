@@ -1,24 +1,18 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import {
-  updateBeans,
-  UPDATE_BEANS,
-  UPDATE_BEANS_SUCCESS,
-  UPDATE_BEANS_FAILED,
-  SET_BEANS_STATUS,
-} from "../actions";
+import { update } from "..";
 
-export function* onUpdateBeans(action: ReturnType<typeof updateBeans>) {
+export function* onUpdateBeans(action: ReturnType<typeof update>) {
   try {
-    yield put({ type: SET_BEANS_STATUS, payload: "loading" });
-    yield put({ type: UPDATE_BEANS_SUCCESS });
+    yield put({ type: "setStatus", payload: "loading" });
+    yield put({ type: "updateSuccess" });
 
-    yield put({ type: SET_BEANS_STATUS, payload: "success" });
+    yield put({ type: "setStatus", payload: "success" });
   } catch (error) {
-    yield put({ type: UPDATE_BEANS_FAILED });
-    yield put({ type: SET_BEANS_STATUS, payload: "failed" });
+    yield put({ type: "updateFailed" });
+    yield put({ type: "setStatus", payload: "failed" });
   }
 }
 
 export function* watchUpdateBeans() {
-  yield takeEvery(UPDATE_BEANS, onUpdateBeans);
+  yield takeEvery("beans/update", onUpdateBeans);
 }
