@@ -15,6 +15,9 @@ const beansSlice = createSlice({
     setStatus: (state: BeansState, action: PayloadAction<Status>) => {
       state.status = action.payload;
     },
+    updateSuccess: (state: BeansState, action: PayloadAction<number>) => {
+      state.amount = action.payload;
+    },
     update: {
       reducer: (state, action: PayloadAction<number>) => {
         state.amount = state.amount + action.payload;
@@ -24,6 +27,6 @@ const beansSlice = createSlice({
   },
 });
 
-export const { setStatus, update } = beansSlice.actions;
+export const { setStatus, update, updateSuccess } = beansSlice.actions;
 
 export default beansSlice.reducer;
