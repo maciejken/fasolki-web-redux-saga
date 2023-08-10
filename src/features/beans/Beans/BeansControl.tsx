@@ -4,10 +4,10 @@ import styles from "./Beans.module.css";
 const BeansControl: React.FC<BeansControlProps> = ({
   amount,
   status,
-  update,
+  updateAmount,
 }: BeansControlProps) => {
-  const handleOnClick = (value: number) => () => {
-    update(value);
+  const handleOnClick = (byValue: number) => () => {
+    updateAmount(byValue);
   };
 
   const handleOnClickPlus = handleOnClick(1);

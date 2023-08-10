@@ -1,6 +1,22 @@
 import { RootState } from "src/app/store";
-// import { createSelector } from "reselect";
+import { createSelector } from "reselect";
+import { BeansState } from "./types";
 
-export const selectBeansAmount = (state: RootState) => state.beans.amount;
+export const selectBeans = (state: RootState) => state.beans;
 
-export const selectBeansStatus = (state: RootState) => state.beans.status;
+export const selectBeansAmount = createSelector(
+  selectBeans,
+  (beans: BeansState) => beans.amount
+);
+export const selectBeansId = createSelector(
+  selectBeans,
+  (beans: BeansState) => beans.id
+);
+export const selectBeansLabel = createSelector(
+  selectBeans,
+  (beans: BeansState) => beans.label
+);
+export const selectBeansStatus = createSelector(
+  selectBeans,
+  (beans: BeansState) => beans.status
+);

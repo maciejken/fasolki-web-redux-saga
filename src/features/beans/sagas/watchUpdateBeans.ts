@@ -1,13 +1,20 @@
-import { call, put, takeEvery } from "redux-saga/effects";
-import { update, updateSuccess } from "..";
-import { fetchBeans } from "../api";
-import { BeansResponse } from "../types";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { call, put, select, takeEvery } from "redux-saga/effects";
+import { updateSuccess } from "..";
+import { fetchBeans, updateBeans } from "../api";
+import { selectBeansId } from "../selectors";
+import { Beans } from "../types";
 
-export function* onUpdateBeans(action: ReturnType<typeof update>) {
+export function* onUpdateBeans(action: PayloadAction<number>) {
   try {
+    const beansId: string = yield select(selectBeansId);
     yield put({ type: "beans/setStatus", payload: "loading" });
-    const beans: BeansResponse = yield call(fetchBeans, "fasolki_jasia");
-    yield put(updateSuccess(beans.amount));
+    const beans: Beans = yield call(fetchBeans, beansId);
+    const updatedBeans: Beans = yield call(updateBeans, beansId, {
+      ...beans,
+      amount: beans.amount + action.payload,
+    });
+    yield put(updateSuccess(updatedBeans));
     yield put({ type: "beans/setStatus", payload: "success" });
   } catch (error) {
     yield put({ type: "beans/updateFailed" });
@@ -16,5 +23,5 @@ export function* onUpdateBeans(action: ReturnType<typeof update>) {
 }
 
 export function* watchUpdateBeans() {
-  yield takeEvery("beans/update", onUpdateBeans);
+  yield takeEvery("beans/updateAmount", onUpdateBeans);
 }

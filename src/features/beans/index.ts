@@ -1,9 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Status } from "src/types";
-import { BeansState } from "./types";
+import { Beans, BeansState } from "./types";
+import { initialBeansId } from "src/lib/firebase/config";
 
 export const initialState: BeansState = {
+  id: initialBeansId,
+  label: process.env.REACT_APP_HEADER_TITLE,
   amount: 0,
   status: "loading",
 };
@@ -15,18 +18,21 @@ const beansSlice = createSlice({
     setStatus: (state: BeansState, action: PayloadAction<Status>) => {
       state.status = action.payload;
     },
-    updateSuccess: (state: BeansState, action: PayloadAction<number>) => {
-      state.amount = action.payload;
+    fetchSuccess: (state: BeansState, action: PayloadAction<Beans>) => {
+      state.amount = action.payload.amount;
+      state.id = action.payload.id;
+      state.label = action.payload.label;
     },
-    update: {
-      reducer: (state, action: PayloadAction<number>) => {
-        state.amount = state.amount + action.payload;
-      },
-      prepare: (value?: number) => ({ payload: value || 1 }),
+    updateSuccess: (state: BeansState, action: PayloadAction<Beans>) => {
+      state.amount = action.payload.amount;
+      state.id = action.payload.id;
+      state.label = action.payload.label;
     },
   },
 });
 
-export const { setStatus, update, updateSuccess } = beansSlice.actions;
+export const { setStatus, fetchSuccess, updateSuccess } = beansSlice.actions;
+export const fetchBeans = createAction("beans/fetch");
+export const updateAmount = createAction<number>("beans/updateAmount");
 
 export default beansSlice.reducer;

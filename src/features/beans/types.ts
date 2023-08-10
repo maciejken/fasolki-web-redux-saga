@@ -1,14 +1,17 @@
 import { Status } from "src/types";
 
-export interface BeansResponse {
+export interface Beans {
   amount: number;
+  id?: string;
+  label?: string;
+  updatedDate?: string;
+  updatedBy?: string;
 }
 
-export interface BeansState {
-  amount: number;
+export interface BeansState extends Beans {
   status: Status;
 }
 
 export interface BeansControlProps extends BeansState {
-  update: (value: number) => void;
+  updateAmount: (value: number) => void;
 }
